@@ -1,0 +1,36 @@
+db.collection.aggregate([
+  {
+    "$match": {
+      "houses": {
+        "$elemMatch": {
+          "$and": [
+            {
+              "neighborhood": "Uptown"
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "$project": {
+      "_id": 0,
+      "houses": {
+        "$filter": {
+          "input": "$houses",
+          "as": "houses",
+          "cond": {
+            "$and": [
+              {
+                "$eq": [
+                  "$$houses.neighborhood",
+                  "Uptown"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+])
